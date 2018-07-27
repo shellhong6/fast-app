@@ -1,9 +1,11 @@
+<import name="carousel" src="../Carousel/carousel"></import>
+<import name="header" src="../SearchHeader/header"></import>
+
 <template>
   <!-- template里只能有一个根节点 -->
   <div class="demo-page">
-    <text class="title">欢迎打开{{title}}</text>
-    <!-- 点击跳转详情页 -->
-    <input class="btn" type="button" value="跳转到详情页" onclick="routeDetail" />
+    <Header></Header>
+    <carousel></carousel>
   </div>
 </template>
 
@@ -31,8 +33,6 @@
 </style>
 
 <script>
-  import router from '@system.router'
-
   export default {
     // 页面级组件的数据模型，影响传入数据的覆盖机制：private内定义的属性不允许被覆盖
     private: {

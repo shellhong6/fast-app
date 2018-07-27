@@ -1,0 +1,60 @@
+<template>
+  <!-- template里只能有一个根节点 -->
+  <div class="demo-page">
+    <swiper>
+      <image src="http://a.hiphotos.baidu.com/image/h%3D300/sign=4a51c9cd7e8b4710d12ffbccf3ccc3b2/b64543a98226cffceee78e5eb5014a90f703ea09.jpg" alt=""></image>
+      <image src="/Common/1.jpg" alt=""></image>
+      <image src="/Common/2.jpg" alt=""></image>
+      <image src="/Common/3.jpg" alt=""></image>
+      <image src="/Common/4.jpg" alt=""></image>
+      <image src="/Common/5.jpg" alt=""></image>
+    </swiper>
+  </div>
+</template>
+
+<style>
+  .demo-page {
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  image{
+    width: 100%;
+    height: 100%;
+  }
+  swiper{
+    width: 100%;
+    height: 30%;
+  }
+</style>
+
+<script>
+  export default {
+    data() {
+      return {
+        text: '欢迎打开详情页'
+      }
+    },
+    /**
+     * 当用户点击菜单按钮时触发，调用app中定义的方法showMenu
+     * 注意：使用加载器测试`创建桌面快捷方式`功能时，请先在`系统设置`中打开`应用加载器`的`桌面快捷方式`权限
+     */
+    onMenuPress() {
+      console.info('showMenu');
+      this.$app.$def.showMenu()
+    },
+    onShow() {
+      console.info(`触发：onShow`)
+      console.info(`执行：获取页面显示状态属性：${this.$visible}`)
+    },
+    onHide() {
+      console.info(`触发：onHide`)
+      console.info(`执行：获取页面显示状态属性：${this.$visible}`)
+    },
+    onDestroy () {
+      console.info(`触发：onDestroy`)
+      console.info(`执行：页面要被销毁，销毁状态：${this.$valid}`)
+    }
+  }
+</script>

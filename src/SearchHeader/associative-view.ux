@@ -1,0 +1,29 @@
+<!-- 本组件监听的事件：
+-->
+<template>
+  <div class="associative-view-container">
+    <list>
+    </list>
+  </div>
+</template>
+
+<style lang="less">
+
+</style>
+
+<script>
+  import prompt from '@system.prompt'
+  import fetch from '@system.fetch'
+
+  const hotWordUrl = 'https://ebook.meizu.com/api/v1/public/search/hotword';
+
+  export default {
+    data() {
+      return {
+        toAssociativeCls: ''
+      }
+    },
+    onInit() {
+    }
+  }
+</script>

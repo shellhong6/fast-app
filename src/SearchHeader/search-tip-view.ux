@@ -1,0 +1,184 @@
+<!-- 本组件监听的事件：
+  toSearchTip: 进入联想搜索状态
+  toNotSearchTip: 退出联想搜索状态
+-->
+<template>
+  <div class="searchTip-view-container {{toSearchTipCls}}">
+    <list>
+      <block if='{{hotWord && hotWord.length}}'>
+        <list-item class='searchTip-view-block' type='hot'>
+          <text class='searchTip-view-header'>热门搜索</text>
+          <div class="searchTip-view-hot-words">
+            <text for='{{word in hotWord}}'>{{word}}</text>
+          </div>
+        </list-item>
+      </block>
+      <block if='historyWord && historyWord.length'>
+        <list-item class='searchTip-view-block' type='history'>
+          <text class='searchTip-view-header'>搜索历史</text>
+          <div class="searchTip-view-history-words">
+            <div class="searchTip-view-history-line" for='{{word in historyWord}}'>
+              <image class="history-icon" src="/Common/search-header/history.webp" alt=""></image>
+              <text>{{word}}</text>
+              <image class="history-remove-icon" src="/Common/search-header/history-remove.webp" alt=""></image>
+            </div>
+          </div>
+        </list-item>
+      </block>
+    </list>
+  </div>
+</template>
+
+<style lang="less">
+  .searchTip-view-container{
+    display: none;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+    padding-top: 142px;
+    position: fixed;
+  }
+  .associativing{
+    display: flex;
+  }
+  list{
+    background-color: #ffffff;
+    height: 100%;
+  }
+  .searchTip-view-block{
+    flex-direction: column;
+    flex-shrink: 0;
+    padding-left: 47px;
+    padding-right: 47px;
+  }
+  .searchTip-view-header{
+    height: 46px;
+    font-size: 44px;
+    color: #989898;
+    margin-left: 24px;
+    margin-top: 39px;
+  }
+  .searchTip-view-hot-words{
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 27px;
+    text{
+      padding: 13px 30px;
+      border: 1px solid #ebebeb;
+      border-radius: 3px;
+      font-size: 40px;
+      color: #646464;
+      flex-shrink: 0;
+      margin-bottom: 42px;
+      margin-right: 30px;
+    }
+  }
+  .searchTip-view-history-words{
+    flex-direction: column;
+    margin-top: 27px;
+  }
+  .searchTip-view-history-line{
+    align-items: center;
+    border-color: #e5e5e5;
+    border-style: solid;
+    border-top-width: 1px;
+    flex-shrink: 0;
+    height: 146px;
+    padding-left: 24px;
+    padding-right: 24px;
+    text{
+      color: black;
+      font-size: 40px;
+      flex-grow: 1;
+    }
+
+  }
+  .history-icon{
+    width: 47px;
+    height: 47px;
+    margin-right: 18px;
+  }
+  .history-remove-icon{
+    width: 41px;
+    height: 41px;
+  }
+</style>
+
+<script>
+  import prompt from '@system.prompt'
+  import fetch from '@system.fetch'
+
+  const hotWordUrl = 'https://ebook.meizu.com/api/v1/public/search/hotword';
+
+  export default {
+    data() {
+      return {
+        toSearchTipCls: '',
+        hotWord: [],
+        historyWord: ['小说','军事','倾国倾城','学校','玄幻修仙','名人名言']
+      }
+    },
+    onInit() {
+      this.$on('toSearchTip', this.toSearchTip.bind(this));
+      this.$on('toNotSearchTip', this.toNotSearchTip.bind(this));
+    },
+    getValFromRes(res, key) {
+      if(res.code != 200){
+        return null;
+      }
+      var temp = JSON.parse(res.data);
+      if(temp && temp.value){
+        return temp.value[key];
+      }
+      return null;
+    },
+    baseFetch(opt) {
+      fetch.fetch({
+        url: hotWordUrl,
+        data: {
+          channel: 4
+        },
+        success: (res) => {
+          var words = this.getValFromRes(res, opt.resKey)
+          if(res){
+            opt.success && opt.success(words);
+          }else{
+            prompt.showToast({
+              message: '数据请求异常'
+            });
+          }
+        },
+        fail() {
+          prompt.showToast({
+            message: '数据请求异常'
+          });
+        }
+      });
+    },
+    toSearchTip() {
+      if(!this.hotWord || !this.hotWord.length){
+        this.baseFetch({
+          url: hotWordUrl,
+          resKey: 'words',
+          data: {
+            channel: 4
+          },
+          success: (res) => {
+            this.hotWord = res;
+          }
+        });
+      }
+      this.toSearchTipCls = 'associativing';
+      prompt.showToast({
+        message: 'toSearchTip'
+      });
+    },
+    toNotSearchTip() {
+      this.toSearchTipCls = '';
+      prompt.showToast({
+        message: 'toNotSearchTip'
+      })
+    }
+  }
+</script>

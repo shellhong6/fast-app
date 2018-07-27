@@ -1,0 +1,189 @@
+<!-- 本组件监听的事件：
+setHeaderToSearching: 进入搜索状态
+setHeaderToNotSearching: 进入非搜索状态 -->
+<import name="search-field" src="./search-field"></import>
+<import name="search-tip-view" src="./search-tip-view"></import>
+<import name="associative-view" src="./associative-view"></import>
+
+<template>
+  <div>
+    <associative-view id='associativeView'></associative-view>
+    <search-tip-view id='searchTipView'></search-tip-view>
+    <div class="header-container">
+      <div class="back-btn {{backBtnCls}}" onclick='handleBack'>
+        <image class="{{backImgCls}}" src="/Common/search-header/lt.png" alt=""></image>
+      </div>
+      <search-field id='searchField'></search-field>
+      <div class="btn-field {{btnFieldCls}}">
+        <div id='shopping-car' class="shopping-car {{shoppingCarCls}}">
+          <image src="/Common/search-header/shopping-car.webp" alt=""></image>
+        </div>
+        <div class="user-info {{userInfoCls}}">
+          <image src="/Common/search-header/user-info.webp" alt=""></image>
+        </div>
+        <div class="search-btn {{searchBtnCls}}"><text>搜索</text></div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style lang="less">
+  @imgBaseWH: 72px;
+  @containerPtb: 27px;
+  @containerH: 88px + @containerPtb * 2;
+  @backBtnW: 70px;
+  @backBtnMl: 50px;
+  @backBtnSearchingW: 122px;
+  @shoppingCarW: 124px;
+  @shoppingCarMr: 14px;
+  @userInfoW: 88px;
+  @userInfoMr: 65px;
+  @btnFieldW: 290px;
+  @btnFieldMl: 23px;
+  @btnFieldSearchingW: 189px;
+  @btnFieldSearchingPl: 32px;
+  @searchBtnW: 125px;
+  @searchBtnFontSize: 46px;
+  image{
+    width: 100%;
+    height: @imgBaseWH;
+    align-items: center;
+  }
+  .header-container {
+    position: fixed;
+    padding-top: @containerPtb;
+    padding-bottom: @containerPtb;
+    height: @containerH;
+    flex-shrink: 0;
+    width: 100%;
+    background-color: #ffffff;
+  }
+  .back-btn{
+    flex-shrink: 0;
+    width: @backBtnW;
+    align-items: center;
+    image{
+      margin-left: @backBtnMl;
+      width: 30px;
+      display: none;
+    }
+  }
+  .back-btn-searching{
+    width: @backBtnSearchingW;
+    .back-img-searching{
+      display: flex;
+    }
+  }
+  .btn-field{
+    animation-name: btnFieldToNormal;
+    animation-duration: 200ms;
+    width: @btnFieldW;
+    padding-left: @btnFieldMl;
+    flex-shrink: 0;
+  }
+  .btn-field-searching{
+    animation-name: btnFieldToSearching;
+    animation-duration: 200ms;
+    width: @btnFieldSearchingW;
+    padding-left: @btnFieldSearchingPl;
+    padding-right: @btnFieldSearchingPl;
+  }
+  .shopping-car{
+    display: flex;
+    align-items: center;
+    width: @shoppingCarW;
+    margin-right: @shoppingCarMr;
+    flex-shrink: 0;
+    padding-left: (@shoppingCarW - @imgBaseWH) / 2;
+    padding-right: (@shoppingCarW - @imgBaseWH) / 2;
+  }
+  .shopping-car-searching{
+    display: none;
+  }
+  .user-info{
+    display: flex;
+    align-items: center;
+    width: @userInfoW;
+    flex-shrink: 0;
+    margin-right: @userInfoMr;
+    padding-left: (@userInfoW - @imgBaseWH) / 2;
+    padding-right: (@userInfoW - @imgBaseWH) / 2;
+  }
+  .user-info-searching{
+    display: none;
+  }
+  .search-btn{
+    display: none;
+    height: 100%;
+    width: @searchBtnW;
+    flex-shrink: 0;
+    text{
+      width: 100%;
+      text-align: center;
+      font-size: @searchBtnFontSize;
+      color: #07bcc2;
+    }
+  }
+  .search-btn-searching{
+    display: flex;
+  }
+  .transformW(@name, @from, @to) {
+    @keyframes @name{
+      from {width: @from;}
+      to {width: @to;}
+    }
+  }
+  .transformW(btnFieldToSearching, @btnFieldW, @btnFieldSearchingW);
+  .transformW(btnFieldToNormal, @btnFieldSearchingW, @btnFieldW);
+</style>
+
+<script>
+  export default {
+    onInit() {
+      this.$on('setHeaderToSearching', this.setHeaderToSearching.bind(this));
+      this.$on('setHeaderToNotSearching', this.setHeaderToNotSearching.bind(this));
+      console.log('document.body.offsetHeight--', document.body.offsetHeight)
+    },
+    setHeaderToSearching(e) { // exclude search-field
+      this.setHeaderStatus(true);
+      this.$broadcast('toSearchTip');
+      e && e.stop();
+    },
+    setHeaderToNotSearching(e) { // exclude search-field
+      this.setHeaderStatus(false);
+      this.$broadcast('toNotSearchTip');
+      e && e.stop();
+    },
+    handleBack() {
+      this.$broadcast('setSearchInputValue', {value: ''});
+      this.$broadcast('setSearchInputBlur');
+    },
+    setHeaderStatus(isSearching) {
+      if(!isSearching){
+        this.backBtnCls = '';
+        this.backImgCls = '';
+        this.btnFieldCls = '';
+        this.shoppingCarCls = '';
+        this.userInfoCls = '';
+        this.searchBtnCls = '';
+      }else{
+        this.backBtnCls = 'back-btn-searching';
+        this.backImgCls = 'back-img-searching';
+        this.btnFieldCls = 'btn-field-searching';
+        this.shoppingCarCls = 'shopping-car-searching';
+        this.userInfoCls = 'user-info-searching';
+        this.searchBtnCls = 'search-btn-searching';
+      }
+    },
+    data() {
+      return {
+        backBtnCls: '',
+        backImgCls: '',
+        btnFieldCls: '',
+        shoppingCarCls: '',
+        userInfoCls: '',
+        searchBtnCls: ''
+      }
+    }
+  }
+</script>

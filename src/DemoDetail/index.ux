@@ -28,7 +28,20 @@
      * 注意：使用加载器测试`创建桌面快捷方式`功能时，请先在`系统设置`中打开`应用加载器`的`桌面快捷方式`权限
      */
     onMenuPress() {
+      console.info('showMenu');
       this.$app.$def.showMenu()
+    },
+    onShow() {
+      console.info(`触发：onShow`)
+      console.info(`执行：获取页面显示状态属性：${this.$visible}`)
+    },
+    onHide() {
+      console.info(`触发：onHide`)
+      console.info(`执行：获取页面显示状态属性：${this.$visible}`)
+    },
+    onDestroy () {
+      console.info(`触发：onDestroy`)
+      console.info(`执行：页面要被销毁，销毁状态：${this.$valid}`)
     }
   }
 </script>
