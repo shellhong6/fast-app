@@ -1,4 +1,5 @@
 <!-- 本组件监听的事件：
+searchInputChange: 接手来自search-field的input change事件
 setHeaderToSearching: 进入搜索状态
 setHeaderToNotSearching: 进入非搜索状态 -->
 <import name="search-field" src="./search-field"></import>
@@ -138,11 +139,12 @@ setHeaderToNotSearching: 进入非搜索状态 -->
 </style>
 
 <script>
+  var g_isSearching = false;
   export default {
     onInit() {
       this.$on('setHeaderToSearching', this.setHeaderToSearching.bind(this));
       this.$on('setHeaderToNotSearching', this.setHeaderToNotSearching.bind(this));
-      console.log('document.body.offsetHeight--', document.body.offsetHeight)
+      this.$on('searchInputChange', this.searchInputChange.bind(this));
     },
     setHeaderToSearching(e) { // exclude search-field
       this.setHeaderStatus(true);
@@ -159,6 +161,7 @@ setHeaderToNotSearching: 进入非搜索状态 -->
       this.$broadcast('setSearchInputBlur');
     },
     setHeaderStatus(isSearching) {
+      g_isSearching = isSearching;
       if(!isSearching){
         this.backBtnCls = '';
         this.backImgCls = '';
@@ -166,6 +169,8 @@ setHeaderToNotSearching: 进入非搜索状态 -->
         this.shoppingCarCls = '';
         this.userInfoCls = '';
         this.searchBtnCls = '';
+        this.$broadcast('toNotSearchTip');
+        this.$broadcast('toNotAssociative');
       }else{
         this.backBtnCls = 'back-btn-searching';
         this.backImgCls = 'back-img-searching';
@@ -173,6 +178,19 @@ setHeaderToNotSearching: 进入非搜索状态 -->
         this.shoppingCarCls = 'shopping-car-searching';
         this.userInfoCls = 'user-info-searching';
         this.searchBtnCls = 'search-btn-searching';
+      }
+    },
+    searchInputChange(e) {
+      if(!g_isSearching){
+        return false;
+      }
+      var val = e.detail.value;
+      if(val){
+        this.$broadcast('toNotSearchTip');
+        this.$broadcast('toAssociative');
+      }else{
+        this.$broadcast('toSearchTip');
+        this.$broadcast('toNotAssociative');
       }
     },
     data() {

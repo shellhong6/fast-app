@@ -85,12 +85,12 @@ setSearchInputBlur: 让搜索框失焦
     },
     handlechange(e) {
       this.searchInputVal = e.value;
-      console.log('this.searchInputVal--', this.searchInputVal);
       if(!this.searchInputVal){
         this.searchClearCls = '';
       }else{
         this.searchClearCls = 'search-clear-searching';
       }
+      this.$dispatch('searchInputChange', {value: this.searchInputVal});
     },
     handleClear() {
       this.$emit('setSearchInputValue', {value: ''});

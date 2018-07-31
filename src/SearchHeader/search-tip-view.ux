@@ -1,6 +1,6 @@
 <!-- 本组件监听的事件：
-  toSearchTip: 进入联想搜索状态
-  toNotSearchTip: 退出联想搜索状态
+  toSearchTip: 进入搜索提示状态
+  toNotSearchTip: 退出搜索提示状态
 -->
 <template>
   <div class="searchTip-view-container {{toSearchTipCls}}">
@@ -39,7 +39,7 @@
     padding-top: 142px;
     position: fixed;
   }
-  .associativing{
+  .searchTiping{
     display: flex;
   }
   list{
@@ -169,7 +169,7 @@
           }
         });
       }
-      this.toSearchTipCls = 'associativing';
+      this.toSearchTipCls = 'searchTiping';
       prompt.showToast({
         message: 'toSearchTip'
       });

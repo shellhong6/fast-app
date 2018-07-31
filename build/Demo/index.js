@@ -443,12 +443,12 @@ exports.default = {
   },
   handlechange: function handlechange(e) {
     this.searchInputVal = e.value;
-    console.log('this.searchInputVal--', this.searchInputVal);
     if (!this.searchInputVal) {
       this.searchClearCls = '';
     } else {
       this.searchClearCls = 'search-clear-searching';
     }
+    this.$dispatch('searchInputChange', { value: this.searchInputVal });
   },
   handleClear: function handleClear() {
     this.$emit('setSearchInputValue', { value: '' });
@@ -635,7 +635,7 @@ module.exports = {
     "paddingTop": "142px",
     "position": "fixed"
   },
-  ".associativing": {
+  ".searchTiping": {
     "display": "flex"
   },
   "list": {
@@ -834,7 +834,7 @@ exports.default = {
         }
       });
     }
-    this.toSearchTipCls = 'associativing';
+    this.toSearchTipCls = 'searchTiping';
     _system2.default.showToast({
       message: 'toSearchTip'
     });
@@ -872,13 +872,40 @@ $app_define$('@app-component/associative-view', [], function($app_require$, $app
 module.exports = {
   "type": "div",
   "attr": {},
-  "classList": [
-    "associative-view-container"
-  ],
+  "classList": function () {return ['associative-view-container', this.toAssociativeCls]},
   "children": [
     {
-      "type": "list",
-      "attr": {}
+      "type": "block",
+      "attr": {},
+      "shown": function () {return this.associativeWords&&this.associativeWords.length},
+      "children": [
+        {
+          "type": "list",
+          "attr": {},
+          "children": [
+            {
+              "type": "list-item",
+              "attr": {
+                "type": "associative-words"
+              },
+              "classList": function () {return ['associative-view-word-line', 'associative-view-word-line' + (this.index)]},
+              "repeat": {
+                "exp": function () {return this.associativeWords},
+                "key": "index",
+                "value": "word"
+              },
+              "children": [
+                {
+                  "type": "text",
+                  "attr": {
+                    "value": function () {return this.word}
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }
@@ -887,7 +914,60 @@ module.exports = {
 /* 20 */
 /***/ (function(module, exports) {
 
-module.exports = {}
+module.exports = {
+  ".associative-view-container": {
+    "display": "none",
+    "flexDirection": "column",
+    "flexGrow": 1,
+    "width": "100%",
+    "height": "100%",
+    "paddingTop": "142px",
+    "position": "fixed",
+    "paddingLeft": "48px",
+    "paddingRight": "48px",
+    "backgroundColor": "#ffffff"
+  },
+  "list": {
+    "height": "100%"
+  },
+  ".associative-view-word-line": {
+    "height": "190px",
+    "borderTopColor": "#e5e5e5",
+    "borderRightColor": "#e5e5e5",
+    "borderBottomColor": "#e5e5e5",
+    "borderLeftColor": "#e5e5e5",
+    "borderStyle": "solid",
+    "borderTopWidth": "1px"
+  },
+  ".associative-view-word-line text": {
+    "color": "#000000",
+    "fontSize": "48px",
+    "_meta": {
+      "ruleDef": [
+        {
+          "t": "a",
+          "n": "class",
+          "i": false,
+          "a": "element",
+          "v": "associative-view-word-line"
+        },
+        {
+          "t": "d"
+        },
+        {
+          "t": "t",
+          "n": "text"
+        }
+      ]
+    }
+  },
+  ".associative-view-word-line0": {
+    "borderTopWidth": "0px"
+  },
+  ".associativing": {
+    "display": "flex"
+  }
+}
 
 /***/ }),
 /* 21 */
@@ -914,10 +994,20 @@ var hotWordUrl = 'https://ebook.meizu.com/api/v1/public/search/hotword';
 exports.default = {
   data: function data() {
     return {
-      toAssociativeCls: ''
+      toAssociativeCls: '',
+      associativeWords: ['alkalk', '看到卡拉斯科', 'd凯迪拉克是快乐的', 'dlsaaaalll', '1alkalk', '1看到卡拉斯科', '1d凯迪拉克是快乐的', '1dlsaaaalll', '2alkalk', '2看到卡拉斯科', '2d凯迪拉克是快乐的', '2dlsaaaalll']
     };
   },
-  onInit: function onInit() {}
+  onInit: function onInit() {
+    this.$on('toAssociative', this.toAssociative.bind(this));
+    this.$on('toNotAssociative', this.toNotAssociative.bind(this));
+  },
+  toAssociative: function toAssociative() {
+    this.toAssociativeCls = 'associativing';
+  },
+  toNotAssociative: function toNotAssociative() {
+    this.toAssociativeCls = '';
+  }
 };}
 
 /***/ }),
@@ -1208,11 +1298,12 @@ module.exports = function(module, exports, $app_require$){'use strict';
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+var g_isSearching = false;
 exports.default = {
   onInit: function onInit() {
     this.$on('setHeaderToSearching', this.setHeaderToSearching.bind(this));
     this.$on('setHeaderToNotSearching', this.setHeaderToNotSearching.bind(this));
-    console.log('document.body.offsetHeight--', document.body.offsetHeight);
+    this.$on('searchInputChange', this.searchInputChange.bind(this));
   },
   setHeaderToSearching: function setHeaderToSearching(e) {
     this.setHeaderStatus(true);
@@ -1229,6 +1320,7 @@ exports.default = {
     this.$broadcast('setSearchInputBlur');
   },
   setHeaderStatus: function setHeaderStatus(isSearching) {
+    g_isSearching = isSearching;
     if (!isSearching) {
       this.backBtnCls = '';
       this.backImgCls = '';
@@ -1236,6 +1328,8 @@ exports.default = {
       this.shoppingCarCls = '';
       this.userInfoCls = '';
       this.searchBtnCls = '';
+      this.$broadcast('toNotSearchTip');
+      this.$broadcast('toNotAssociative');
     } else {
       this.backBtnCls = 'back-btn-searching';
       this.backImgCls = 'back-img-searching';
@@ -1243,6 +1337,19 @@ exports.default = {
       this.shoppingCarCls = 'shopping-car-searching';
       this.userInfoCls = 'user-info-searching';
       this.searchBtnCls = 'search-btn-searching';
+    }
+  },
+  searchInputChange: function searchInputChange(e) {
+    if (!g_isSearching) {
+      return false;
+    }
+    var val = e.detail.value;
+    if (val) {
+      this.$broadcast('toNotSearchTip');
+      this.$broadcast('toAssociative');
+    } else {
+      this.$broadcast('toSearchTip');
+      this.$broadcast('toNotAssociative');
     }
   },
   data: function data() {
