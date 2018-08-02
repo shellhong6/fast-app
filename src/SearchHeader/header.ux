@@ -4,6 +4,7 @@ setHeaderToSearching: 进入搜索状态
 setHeaderToNotSearching: 进入非搜索状态
 setHeaderToResulting: 进入搜索结果
 setHeaderToNotResulting: 退出搜索结果
+setSearchInputValue1: 设置搜索输入框内容
  -->
 <import name="search-field" src="./search-field"></import>
 <import name="search-tip-view" src="./search-tip-view"></import>
@@ -145,6 +146,7 @@ setHeaderToNotResulting: 退出搜索结果
 
 <script>
   var g_isSearching = false;
+  var g_stutus = '';
   export default {
     onInit() {
       this.$on('setHeaderToSearching', this.setHeaderToSearching.bind(this));
@@ -152,31 +154,47 @@ setHeaderToNotResulting: 退出搜索结果
       this.$on('searchInputChange', this.searchInputChange.bind(this));
       this.$on('setHeaderToResulting', this.setHeaderToResulting.bind(this));
       this.$on('setHeaderToNotResulting', this.setHeaderToNotResulting.bind(this));
+      this.$on('setSearchInputValue1', this.setSearchInputValue1.bind(this));
+    },
+    setSearchInputValue1(e) {
+      for(var p in e.detail){
+        console.log('header-setSearchInputValue1-', p, e.detail[p])
+      }
+
+      this.$broadcast('setSearchInputValue', e.detail);
     },
     setHeaderToResulting(e) {
+      g_stutus = 'resulting';
       this.$broadcast('toNotSearchTip');
       this.$broadcast('toNotAssociative');
       this.$broadcast('toSearchResulting', {word: e.detail.word});
       e && e.stop();
     },
     setHeaderToNotResulting(e) {
+      g_stutus = 'tiping';
       this.$broadcast('toSearchTip');
       this.$broadcast('toNotSearchResulting');
       e && e.stop();
     },
     setHeaderToSearching(e) { // exclude search-field
+      g_stutus = 'searching';
       this.setHeaderStatus(true);
       this.$broadcast('toSearchTip');
       e && e.stop();
     },
     setHeaderToNotSearching(e) { // exclude search-field
+      g_stutus = 'notsearching';
       this.setHeaderStatus(false);
       this.$broadcast('toNotSearchTip');
       e && e.stop();
     },
     handleBack() {
-      this.$broadcast('setSearchInputValue', {value: ''});
-      this.$broadcast('setSearchInputBlur');
+      if(g_stutus == 'resulting'){
+        this.setHeaderToNotResulting();
+      }else{
+        this.$broadcast('setSearchInputValue', {value: ''});
+        this.$broadcast('setSearchInputBlur');
+      }
     },
     setHeaderStatus(isSearching) {
       g_isSearching = isSearching;
@@ -205,9 +223,11 @@ setHeaderToNotResulting: 退出搜索结果
       }
       var val = e.detail.value;
       if(val){
+        g_stutus = 'associativing';
         this.$broadcast('toNotSearchTip');
         this.$broadcast('toAssociative');
       }else{
+        g_stutus = 'tiping';
         this.$broadcast('toSearchTip');
         this.$broadcast('toNotAssociative');
       }

@@ -443,7 +443,11 @@ exports.default = {
     this.searchClearCls = '';
   },
   handlechange: function handlechange(e) {
-    this.searchInputVal = e.value;
+    console.log('e.value', e.value || e.detail.value);
+    this.searchInputVal = e.value || e.detail.value;
+    if (e.detail && e.detail.notEmitChange) {
+      return;
+    }
     if (!this.searchInputVal) {
       this.searchClearCls = '';
     } else {
@@ -455,7 +459,9 @@ exports.default = {
     this.$emit('setSearchInputValue', { value: '' });
   },
   setSearchInputValue: function setSearchInputValue(e) {
-    this.$emitElement('change', { value: e.detail.value }, 'searchInput');
+    console.log('search-field-setSearchInputValue-value', e.detail.value);
+    console.log('search-field-setSearchInputValue-notEmitChange', e.detail.notEmitChange);
+    this.$emitElement('change', { value: e.detail.value, notEmitChange: !!e.detail.notEmitChange }, 'searchInput');
     e && e.stop();
   },
   setSearchInputBlur: function setSearchInputBlur(e) {
@@ -1148,6 +1154,7 @@ module.exports = {
     "height": "238px",
     "width": "166px",
     "marginRight": "51px",
+    "flexShrink": 0,
     "_meta": {
       "ruleDef": [
         {
@@ -1260,6 +1267,7 @@ exports.default = {
     });
   },
   toSearchResulting: function toSearchResulting(e) {
+    this.$dispatch('setSearchInputValue1', { value: e.detail.word, notEmitChange: true });
     _system2.default.showToast({
       message: e.detail.word
     });
@@ -1754,6 +1762,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var g_isSearching = false;
+var g_stutus = '';
 exports.default = {
   onInit: function onInit() {
     this.$on('setHeaderToSearching', this.setHeaderToSearching.bind(this));
@@ -1761,31 +1770,47 @@ exports.default = {
     this.$on('searchInputChange', this.searchInputChange.bind(this));
     this.$on('setHeaderToResulting', this.setHeaderToResulting.bind(this));
     this.$on('setHeaderToNotResulting', this.setHeaderToNotResulting.bind(this));
+    this.$on('setSearchInputValue1', this.setSearchInputValue1.bind(this));
+  },
+  setSearchInputValue1: function setSearchInputValue1(e) {
+    for (var p in e.detail) {
+      console.log('header-setSearchInputValue1-', p, e.detail[p]);
+    }
+
+    this.$broadcast('setSearchInputValue', e.detail);
   },
   setHeaderToResulting: function setHeaderToResulting(e) {
+    g_stutus = 'resulting';
     this.$broadcast('toNotSearchTip');
     this.$broadcast('toNotAssociative');
     this.$broadcast('toSearchResulting', { word: e.detail.word });
     e && e.stop();
   },
   setHeaderToNotResulting: function setHeaderToNotResulting(e) {
+    g_stutus = 'tiping';
     this.$broadcast('toSearchTip');
     this.$broadcast('toNotSearchResulting');
     e && e.stop();
   },
   setHeaderToSearching: function setHeaderToSearching(e) {
+    g_stutus = 'searching';
     this.setHeaderStatus(true);
     this.$broadcast('toSearchTip');
     e && e.stop();
   },
   setHeaderToNotSearching: function setHeaderToNotSearching(e) {
+    g_stutus = 'notsearching';
     this.setHeaderStatus(false);
     this.$broadcast('toNotSearchTip');
     e && e.stop();
   },
   handleBack: function handleBack() {
-    this.$broadcast('setSearchInputValue', { value: '' });
-    this.$broadcast('setSearchInputBlur');
+    if (g_stutus == 'resulting') {
+      this.setHeaderToNotResulting();
+    } else {
+      this.$broadcast('setSearchInputValue', { value: '' });
+      this.$broadcast('setSearchInputBlur');
+    }
   },
   setHeaderStatus: function setHeaderStatus(isSearching) {
     g_isSearching = isSearching;
@@ -1814,9 +1839,11 @@ exports.default = {
     }
     var val = e.detail.value;
     if (val) {
+      g_stutus = 'associativing';
       this.$broadcast('toNotSearchTip');
       this.$broadcast('toAssociative');
     } else {
+      g_stutus = 'tiping';
       this.$broadcast('toSearchTip');
       this.$broadcast('toNotAssociative');
     }

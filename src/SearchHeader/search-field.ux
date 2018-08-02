@@ -84,7 +84,11 @@ setSearchInputBlur: 让搜索框失焦
       this.searchClearCls = '';
     },
     handlechange(e) {
-      this.searchInputVal = e.value;
+      console.log('e.value', e.value || e.detail.value)
+      this.searchInputVal = e.value || e.detail.value;
+      if(e.detail && e.detail.notEmitChange){
+        return;
+      }
       if(!this.searchInputVal){
         this.searchClearCls = '';
       }else{
@@ -96,7 +100,9 @@ setSearchInputBlur: 让搜索框失焦
       this.$emit('setSearchInputValue', {value: ''});
     },
     setSearchInputValue(e) {
-      this.$emitElement('change', {value: e.detail.value}, 'searchInput');
+      console.log('search-field-setSearchInputValue-value', e.detail.value)
+      console.log('search-field-setSearchInputValue-notEmitChange', e.detail.notEmitChange)
+      this.$emitElement('change', {value: e.detail.value, notEmitChange: !!e.detail.notEmitChange}, 'searchInput');
       e && e.stop();
     },
     setSearchInputBlur(e) {

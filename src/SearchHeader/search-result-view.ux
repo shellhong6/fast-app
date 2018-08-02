@@ -44,6 +44,7 @@
       height: 238px;
       width: 166px;
       margin-right: 51px;
+      flex-shrink: 0;
     }
   }
   .search-result-view-line0{
@@ -98,6 +99,7 @@
       });
     },
     toSearchResulting(e) {
+      this.$dispatch('setSearchInputValue1', {value: e.detail.word, notEmitChange: true});
       prompt.showToast({
         message: e.detail.word
       });
