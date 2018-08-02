@@ -1,7 +1,6 @@
 <!-- 本组件监听的事件：
   toSearchTip: 进入搜索提示状态
-  toNotSearchTip: 退出搜索提示状态
--->
+  toNotSearchTip: 退出搜索提示状态-->
 <template>
   <div class="searchTip-view-container {{toSearchTipCls}}">
     <list>
@@ -9,7 +8,7 @@
         <list-item class='searchTip-view-block' type='hot'>
           <text class='searchTip-view-header'>热门搜索</text>
           <div class="searchTip-view-hot-words">
-            <text for='{{word in hotWord}}'>{{word}}</text>
+            <text for='{{word in hotWord}}' onclick='handleClick(word)'>{{word}}</text>
           </div>
         </list-item>
       </block>
@@ -17,7 +16,7 @@
         <list-item class='searchTip-view-block' type='history'>
           <text class='searchTip-view-header'>搜索历史</text>
           <div class="searchTip-view-history-words">
-            <div class="searchTip-view-history-line" for='{{word in historyWord}}'>
+            <div class="searchTip-view-history-line" for='{{word in historyWord}}' onclick='handleClick(word)'>
               <image class="history-icon" src="/Common/search-header/history.webp" alt=""></image>
               <text>{{word}}</text>
               <image class="history-remove-icon" src="/Common/search-header/history-remove.webp" alt=""></image>
@@ -133,6 +132,9 @@
       }
       return null;
     },
+    handleClick(word) {
+      this.$dispatch('setHeaderToResulting', {word: word});
+    },
     baseFetch(opt) {
       fetch.fetch({
         url: hotWordUrl,
@@ -170,15 +172,9 @@
         });
       }
       this.toSearchTipCls = 'searchTiping';
-      prompt.showToast({
-        message: 'toSearchTip'
-      });
     },
     toNotSearchTip() {
       this.toSearchTipCls = '';
-      prompt.showToast({
-        message: 'toNotSearchTip'
-      })
     }
   }
 </script>

@@ -76,9 +76,9 @@
 
 __webpack_require__(5)
 __webpack_require__(9)
-var $app_template$ = __webpack_require__(25)
-var $app_style$ = __webpack_require__(26)
-var $app_script$ = __webpack_require__(27)
+var $app_template$ = __webpack_require__(30)
+var $app_style$ = __webpack_require__(31)
+var $app_script$ = __webpack_require__(32)
 
 $app_define$('@app-component/index', [], function($app_require$, $app_exports$, $app_module$){
      $app_script$($app_module$, $app_exports$, $app_require$)
@@ -233,9 +233,10 @@ exports.default = {
 __webpack_require__(10)
 __webpack_require__(14)
 __webpack_require__(18)
-var $app_template$ = __webpack_require__(22)
-var $app_style$ = __webpack_require__(23)
-var $app_script$ = __webpack_require__(24)
+__webpack_require__(22)
+var $app_template$ = __webpack_require__(27)
+var $app_style$ = __webpack_require__(28)
+var $app_script$ = __webpack_require__(29)
 
 $app_define$('@app-component/header', [], function($app_require$, $app_exports$, $app_module$){
      $app_script$($app_module$, $app_exports$, $app_require$)
@@ -533,6 +534,9 @@ module.exports = {
                       "repeat": {
                         "exp": function () {return this.hotWord},
                         "value": "word"
+                      },
+                      "events": {
+                        "click": function (evt) {this.handleClick(this.word,evt)}
                       }
                     }
                   ]
@@ -580,6 +584,9 @@ module.exports = {
                       "repeat": {
                         "exp": function () {return this.historyWord},
                         "value": "word"
+                      },
+                      "events": {
+                        "click": function (evt) {this.handleClick(this.word,evt)}
                       },
                       "children": [
                         {
@@ -794,6 +801,9 @@ exports.default = {
     }
     return null;
   },
+  handleClick: function handleClick(word) {
+    this.$dispatch('setHeaderToResulting', { word: word });
+  },
   baseFetch: function baseFetch(opt) {
     var _this = this;
 
@@ -835,15 +845,9 @@ exports.default = {
       });
     }
     this.toSearchTipCls = 'searchTiping';
-    _system2.default.showToast({
-      message: 'toSearchTip'
-    });
   },
   toNotSearchTip: function toNotSearchTip() {
     this.toSearchTipCls = '';
-    _system2.default.showToast({
-      message: 'toNotSearchTip'
-    });
   }
 };}
 
@@ -893,6 +897,9 @@ module.exports = {
                 "exp": function () {return this.associativeWords},
                 "key": "index",
                 "value": "word"
+              },
+              "events": {
+                "click": function (evt) {this.handleClick(this.word,evt)}
               },
               "children": [
                 {
@@ -1007,17 +1014,465 @@ exports.default = {
   },
   toNotAssociative: function toNotAssociative() {
     this.toAssociativeCls = '';
+  },
+  handleClick: function handleClick(word) {
+    this.$dispatch('setHeaderToResulting', { word: word });
   }
 };}
 
 /***/ }),
 /* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var $app_template$ = __webpack_require__(23)
+var $app_style$ = __webpack_require__(24)
+var $app_script$ = __webpack_require__(25)
+
+$app_define$('@app-component/search-result-view', [], function($app_require$, $app_exports$, $app_module$){
+     $app_script$($app_module$, $app_exports$, $app_require$)
+     if ($app_exports$.__esModule && $app_exports$.default) {
+            $app_module$.exports = $app_exports$.default
+        }
+     $app_module$.exports.template = $app_template$
+     $app_module$.exports.style = $app_style$
+})
+
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports) {
+
+module.exports = {
+  "type": "div",
+  "attr": {},
+  "classList": function () {return ['search-result-view-container', this.toSearchResultingCls]},
+  "children": [
+    {
+      "type": "block",
+      "attr": {},
+      "shown": function () {return this.resultList&&this.resultList.length},
+      "children": [
+        {
+          "type": "list",
+          "attr": {},
+          "children": [
+            {
+              "type": "list-item",
+              "attr": {
+                "type": "result-line"
+              },
+              "classList": function () {return ['search-result-view-line', 'search-result-view-line' + (this.index)]},
+              "repeat": {
+                "exp": function () {return this.resultList},
+                "key": "index",
+                "value": "item"
+              },
+              "events": {
+                "click": function (evt) {this.handleClick(this.item.title,evt)}
+              },
+              "children": [
+                {
+                  "type": "image",
+                  "attr": {
+                    "src": function () {return this.item.cover},
+                    "alt": ""
+                  },
+                  "classList": [
+                    "result-icon"
+                  ]
+                },
+                {
+                  "type": "div",
+                  "attr": {},
+                  "classList": [
+                    "result-right-field"
+                  ],
+                  "children": [
+                    {
+                      "type": "text",
+                      "attr": {
+                        "value": function () {return this.item.title}
+                      },
+                      "classList": [
+                        "result-title"
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "attr": {
+                        "value": function () {return this.item.owner}
+                      },
+                      "classList": [
+                        "result-owner"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports) {
+
+module.exports = {
+  ".search-result-view-container": {
+    "display": "none",
+    "flexDirection": "column",
+    "flexGrow": 1,
+    "width": "100%",
+    "height": "100%",
+    "paddingTop": "142px",
+    "position": "fixed",
+    "paddingLeft": "48px",
+    "paddingRight": "48px",
+    "backgroundColor": "#ffffff"
+  },
+  "list": {
+    "height": "100%"
+  },
+  ".search-result-view-line": {
+    "flexDirection": "row",
+    "flexGrow": 1,
+    "flexShrink": 0,
+    "height": "328px",
+    "alignItems": "center"
+  },
+  ".search-result-view-line image": {
+    "height": "238px",
+    "width": "166px",
+    "marginRight": "51px",
+    "_meta": {
+      "ruleDef": [
+        {
+          "t": "a",
+          "n": "class",
+          "i": false,
+          "a": "element",
+          "v": "search-result-view-line"
+        },
+        {
+          "t": "d"
+        },
+        {
+          "t": "t",
+          "n": "image"
+        }
+      ]
+    }
+  },
+  ".search-result-view-line0 .result-right-field": {
+    "borderTopWidth": "0px",
+    "_meta": {
+      "ruleDef": [
+        {
+          "t": "a",
+          "n": "class",
+          "i": false,
+          "a": "element",
+          "v": "search-result-view-line0"
+        },
+        {
+          "t": "d"
+        },
+        {
+          "t": "a",
+          "n": "class",
+          "i": false,
+          "a": "element",
+          "v": "result-right-field"
+        }
+      ]
+    }
+  },
+  ".result-right-field": {
+    "flexDirection": "column",
+    "justifyContent": "center",
+    "alignItems": "flex-start",
+    "borderTopColor": "#e5e5e5",
+    "borderRightColor": "#e5e5e5",
+    "borderBottomColor": "#e5e5e5",
+    "borderLeftColor": "#e5e5e5",
+    "borderStyle": "solid",
+    "borderTopWidth": "1px",
+    "flexGrow": 1,
+    "flexShrink": 0,
+    "height": "100%"
+  },
+  ".result-title": {
+    "color": "#000000",
+    "fontSize": "48px",
+    "marginBottom": "22px"
+  },
+  ".result-owner": {
+    "color": "#cfcfcf",
+    "fontSize": "32px"
+  },
+  ".resulting": {
+    "display": "flex"
+  }
+}
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = function(module, exports, $app_require$){'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _system = $app_require$('@app-module/system.prompt');
+
+var _system2 = _interopRequireDefault(_system);
+
+var _system3 = $app_require$('@app-module/system.fetch');
+
+var _system4 = _interopRequireDefault(_system3);
+
+var _result = __webpack_require__(26);
+
+var _result2 = _interopRequireDefault(_result);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = {
+  data: function data() {
+    return {
+      toSearchResultingCls: '',
+      resultList: _result2.default.value.ebook.items
+    };
+  },
+  onInit: function onInit() {
+    this.$on('toSearchResulting', this.toSearchResulting.bind(this));
+    this.$on('toNotSearchResulting', this.toNotSearchResulting.bind(this));
+  },
+  handleClick: function handleClick(word) {
+    _system2.default.showToast({
+      message: word
+    });
+  },
+  toSearchResulting: function toSearchResulting(e) {
+    _system2.default.showToast({
+      message: e.detail.word
+    });
+    this.toSearchResultingCls = 'resulting';
+  },
+  toNotSearchResulting: function toNotSearchResulting() {
+    this.toSearchResultingCls = '';
+  }
+};}
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.default = {
+	"app": null,
+	"code": 200,
+	"message": null,
+	"redirect": "",
+	"value": {
+		"ebook": {
+			"sessionId": "b7a083a625d4e997eda4802965e4ccf737d5b772",
+			"items": [{
+				"id": "514350",
+				"title": "沉睡的人鱼之家",
+				"cover": "http://img60.ddimg.cn/digital/product/57/19/1900685719_ii_cover.jpg?version=3438bd4c-8710-402b-bb4b-0e59ee72e97c555",
+				"source": "MZ",
+				"link": "",
+				"owner": "东野圭吾",
+				"link_type": "APP"
+			}, {
+				"id": "338905",
+				"title": "梦幻花",
+				"cover": "http://img62.ddimg.cn/digital/product/44/96/1900564496_ii_cover.jpg?version=594166d5-835c-438b-bb1a-d235e9491837555",
+				"source": "MZ",
+				"link": "",
+				"owner": "东野圭吾",
+				"link_type": "APP"
+			}, {
+				"id": "457343",
+				"title": "东野圭吾作品：信",
+				"cover": "http://img62.ddimg.cn/digital/product/23/9/1900652309_ii_cover.jpg?version=86175fc0-6d51-46e8-a51f-2cc0928b47f5555",
+				"source": "MZ",
+				"link": "",
+				"owner": "东野圭吾",
+				"link_type": "APP"
+			}, {
+				"id": "459743",
+				"title": "绑架游戏",
+				"cover": "http://img62.ddimg.cn/digital/product/39/87/1900603987_ii_cover.jpg?version=dc712aaf-1cc5-46ac-9578-2955cb91571f555",
+				"source": "MZ",
+				"link": "",
+				"owner": "东野圭吾",
+				"link_type": "APP"
+			}, {
+				"id": "542510",
+				"title": "东野圭吾的人性实验室(套装2册)",
+				"cover": "http://img60.ddimg.cn/digital/product/58/88/1900725888_ii_cover.jpg?version=dfe40165-4058-4a90-b2e7-5c009dc0b5c4",
+				"source": "MZ",
+				"link": "",
+				"owner": "东野圭吾",
+				"link_type": "APP"
+			}, {
+				"id": "453853",
+				"title": "拉普拉斯的魔女",
+				"cover": "http://img61.ddimg.cn/digital/product/82/61/1900668261_ii_cover.jpg?version=4cdf4cf2-3c88-4af2-a802-08531034f97e55",
+				"source": "MZ",
+				"link": "",
+				"owner": "东野圭吾",
+				"link_type": "APP"
+			}, {
+				"id": "577689",
+				"title": "东野圭吾作品：白马山庄谜案",
+				"cover": "http://img61.ddimg.cn/digital/product/15/95/1900961595_ii_cover.jpg?version=e559dcf0-a500-4da2-b17d-2d450de89f5b",
+				"source": "MZ",
+				"link": "",
+				"owner": "（日）东野圭吾",
+				"link_type": "APP"
+			}, {
+				"id": "338824",
+				"title": "假面饭店",
+				"cover": "http://img61.ddimg.cn/digital/product/90/7/1900649007_ii_cover.jpg?version=f59a610d-ab70-487c-8fd8-90ca0906bbb85",
+				"source": "MZ",
+				"link": "",
+				"owner": "（日）东野圭吾",
+				"link_type": "APP"
+			}, {
+				"id": "577690",
+				"title": "东野圭吾作品：没有凶手的暗夜",
+				"cover": "http://img60.ddimg.cn/digital/product/15/96/1900961596_ii_cover.jpg?version=910f2813-0512-4a60-bac5-6b05fe874f19",
+				"source": "MZ",
+				"link": "",
+				"owner": "（日）东野圭吾",
+				"link_type": "APP"
+			}, {
+				"id": "577691",
+				"title": "东野圭吾作品：怪人们",
+				"cover": "http://img61.ddimg.cn/digital/product/15/97/1900961597_ii_cover.jpg?version=19d4f928-19ec-4946-8d1c-4cbd08b8565c",
+				"source": "MZ",
+				"link": "",
+				"owner": "（日）东野圭吾",
+				"link_type": "APP"
+			}, {
+				"id": "339707",
+				"title": "湖畔",
+				"cover": "http://img61.ddimg.cn/digital/product/28/69/1900542869_ii_cover.jpg?version=43905523-647b-4ee0-976f-4bdc650fd3b1555",
+				"source": "MZ",
+				"link": "",
+				"owner": "（日）东野圭吾",
+				"link_type": "APP"
+			}, {
+				"id": "339102",
+				"title": "虚无的十字架",
+				"cover": "http://img60.ddimg.cn/digital/product/55/77/1900505577_ii_cover.jpg?version=8ebd4626-e63d-4146-9303-e5f95922bc17555",
+				"source": "MZ",
+				"link": "",
+				"owner": "（日）东野圭吾",
+				"link_type": "APP"
+			}, {
+				"id": "577688",
+				"title": "东野圭吾作品：梦回都灵",
+				"cover": "http://img61.ddimg.cn/digital/product/15/94/1900961594_ii_cover.jpg?version=f9f08ab2-5d75-402e-832a-d28c4b07e59a",
+				"source": "MZ",
+				"link": "",
+				"owner": "（日）东野圭吾",
+				"link_type": "APP"
+			}, {
+				"id": "569738",
+				"title": "第十年的情人节",
+				"cover": "http://img61.ddimg.cn/digital/product/23/88/1900762388_ii_cover.jpg?version=4c9ad6ca-ac79-4b2c-8984-7a1e254bf836",
+				"source": "MZ",
+				"link": "",
+				"owner": "（日）东野圭吾",
+				"link_type": "APP"
+			}, {
+				"id": "339352",
+				"title": "疾风回旋曲",
+				"cover": "http://img61.ddimg.cn/digital/product/5/74/1900510574_ii_cover.jpg?version=4a5a825e-e771-4a70-abc3-b96b6dbd08a7555",
+				"source": "MZ",
+				"link": "",
+				"owner": "（日）东野圭吾",
+				"link_type": "APP"
+			}, {
+				"id": "455535",
+				"title": "假面前夜",
+				"cover": "http://img61.ddimg.cn/digital/product/40/94/1900654094_ii_cover.jpg?version=48a908cb-6413-46dc-acf6-15a5704666eb555",
+				"source": "MZ",
+				"link": "",
+				"owner": "（日）东野圭吾",
+				"link_type": "APP"
+			}, {
+				"id": "459399",
+				"title": "十一字杀人",
+				"cover": "http://img60.ddimg.cn/digital/product/6/25/1900470625_ii_cover.jpg?version=fc71afef-9b20-4241-9519-cda2009f36e2555",
+				"source": "MZ",
+				"link": "",
+				"owner": "（日）东野圭吾",
+				"link_type": "APP"
+			}, {
+				"id": "459400",
+				"title": "濒死之眼",
+				"cover": "http://img62.ddimg.cn/digital/product/6/26/1900470626_ii_cover.jpg?version=686cf3b6-8c9e-4b6e-921a-3053a57a78e8555",
+				"source": "MZ",
+				"link": "",
+				"owner": "（日）东野圭吾",
+				"link_type": "APP"
+			}, {
+				"id": "494809",
+				"title": "全球悬疑大师典藏合集：共13册",
+				"cover": "http://img62.ddimg.cn/digital/product/49/52/1900644952_ii_cover.jpg?version=3a93a146-de71-4acc-8537-a5c6c0b7c4a6",
+				"source": "MZ",
+				"link": "",
+				"owner": "蜘蛛,秦明,（日）东野圭吾,九滴水等",
+				"link_type": "APP"
+			}, {
+				"id": "578121",
+				"title": "黑色皮革手册(怪不得是东野圭吾的偶像！)",
+				"cover": "http://img62.ddimg.cn/digital/product/39/80/1900973980_ii_cover.jpg?version=2832509e-152b-46df-add6-05ce00462d53",
+				"source": "MZ",
+				"link": "",
+				"owner": "松本清张,邱振瑞（译）",
+				"link_type": "APP"
+			}],
+			"searchId": "4ded603345a4bb73f4d45c6e4641978cadc1b0fa",
+			"rules": {
+				"cp": "solr",
+				"rule": "0"
+			}
+		}
+	}
+};
+
+/***/ }),
+/* 27 */
 /***/ (function(module, exports) {
 
 module.exports = {
   "type": "div",
   "attr": {},
   "children": [
+    {
+      "type": "search-result-view",
+      "attr": {
+        "id": "searchResultView"
+      },
+      "id": "searchResultView"
+    },
     {
       "type": "associative-view",
       "attr": {
@@ -1121,7 +1576,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 23 */
+/* 28 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -1290,7 +1745,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 24 */
+/* 29 */
 /***/ (function(module, exports) {
 
 module.exports = function(module, exports, $app_require$){'use strict';
@@ -1304,6 +1759,19 @@ exports.default = {
     this.$on('setHeaderToSearching', this.setHeaderToSearching.bind(this));
     this.$on('setHeaderToNotSearching', this.setHeaderToNotSearching.bind(this));
     this.$on('searchInputChange', this.searchInputChange.bind(this));
+    this.$on('setHeaderToResulting', this.setHeaderToResulting.bind(this));
+    this.$on('setHeaderToNotResulting', this.setHeaderToNotResulting.bind(this));
+  },
+  setHeaderToResulting: function setHeaderToResulting(e) {
+    this.$broadcast('toNotSearchTip');
+    this.$broadcast('toNotAssociative');
+    this.$broadcast('toSearchResulting', { word: e.detail.word });
+    e && e.stop();
+  },
+  setHeaderToNotResulting: function setHeaderToNotResulting(e) {
+    this.$broadcast('toSearchTip');
+    this.$broadcast('toNotSearchResulting');
+    e && e.stop();
   },
   setHeaderToSearching: function setHeaderToSearching(e) {
     this.setHeaderStatus(true);
@@ -1330,6 +1798,7 @@ exports.default = {
       this.searchBtnCls = '';
       this.$broadcast('toNotSearchTip');
       this.$broadcast('toNotAssociative');
+      this.$broadcast('toNotSearchResulting');
     } else {
       this.backBtnCls = 'back-btn-searching';
       this.backImgCls = 'back-img-searching';
@@ -1365,7 +1834,7 @@ exports.default = {
 };}
 
 /***/ }),
-/* 25 */
+/* 30 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -1387,7 +1856,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 26 */
+/* 31 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -1412,7 +1881,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 27 */
+/* 32 */
 /***/ (function(module, exports) {
 
 module.exports = function(module, exports, $app_require$){'use strict';

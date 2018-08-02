@@ -1,13 +1,18 @@
 <!-- 本组件监听的事件：
 searchInputChange: 接手来自search-field的input change事件
 setHeaderToSearching: 进入搜索状态
-setHeaderToNotSearching: 进入非搜索状态 -->
+setHeaderToNotSearching: 进入非搜索状态
+setHeaderToResulting: 进入搜索结果
+setHeaderToNotResulting: 退出搜索结果
+ -->
 <import name="search-field" src="./search-field"></import>
 <import name="search-tip-view" src="./search-tip-view"></import>
 <import name="associative-view" src="./associative-view"></import>
+<import name="search-result-view" src="./search-result-view"></import>
 
 <template>
   <div>
+    <search-result-view id='searchResultView'></search-result-view>
     <associative-view id='associativeView'></associative-view>
     <search-tip-view id='searchTipView'></search-tip-view>
     <div class="header-container">
@@ -145,6 +150,19 @@ setHeaderToNotSearching: 进入非搜索状态 -->
       this.$on('setHeaderToSearching', this.setHeaderToSearching.bind(this));
       this.$on('setHeaderToNotSearching', this.setHeaderToNotSearching.bind(this));
       this.$on('searchInputChange', this.searchInputChange.bind(this));
+      this.$on('setHeaderToResulting', this.setHeaderToResulting.bind(this));
+      this.$on('setHeaderToNotResulting', this.setHeaderToNotResulting.bind(this));
+    },
+    setHeaderToResulting(e) {
+      this.$broadcast('toNotSearchTip');
+      this.$broadcast('toNotAssociative');
+      this.$broadcast('toSearchResulting', {word: e.detail.word});
+      e && e.stop();
+    },
+    setHeaderToNotResulting(e) {
+      this.$broadcast('toSearchTip');
+      this.$broadcast('toNotSearchResulting');
+      e && e.stop();
     },
     setHeaderToSearching(e) { // exclude search-field
       this.setHeaderStatus(true);
@@ -171,6 +189,7 @@ setHeaderToNotSearching: 进入非搜索状态 -->
         this.searchBtnCls = '';
         this.$broadcast('toNotSearchTip');
         this.$broadcast('toNotAssociative');
+        this.$broadcast('toNotSearchResulting');
       }else{
         this.backBtnCls = 'back-btn-searching';
         this.backImgCls = 'back-img-searching';

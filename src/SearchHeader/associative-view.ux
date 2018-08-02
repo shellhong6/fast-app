@@ -6,7 +6,7 @@
   <div class="associative-view-container {{toAssociativeCls}}">
     <block if='associativeWords && associativeWords.length'>
       <list>
-        <list-item class='associative-view-word-line associative-view-word-line{{index}}' type='associative-words' for='{{(index,word) in associativeWords}}'>
+        <list-item class='associative-view-word-line associative-view-word-line{{index}}' type='associative-words' for='{{(index,word) in associativeWords}}' onclick='handleClick(word)'>
           <text>{{word}}</text>
         </list-item>
       </list>
@@ -70,6 +70,9 @@
     },
     toNotAssociative() {
       this.toAssociativeCls = '';
+    },
+    handleClick(word) {
+      this.$dispatch('setHeaderToResulting', {word: word});
     }
   }
 </script>
