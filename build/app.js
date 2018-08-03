@@ -63,15 +63,15 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 37);
+/******/ 	return __webpack_require__(__webpack_require__.s = 29);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 37:
+/***/ 29:
 /***/ (function(module, exports, __webpack_require__) {
 
-var $app_script$ = __webpack_require__(38)
+var $app_script$ = __webpack_require__(30)
 
 $app_define$('@app-application/app', [], function($app_require$, $app_exports$, $app_module$){
      $app_script$($app_module$, $app_exports$, $app_require$)
@@ -85,7 +85,7 @@ $app_bootstrap$('@app-application/app',{ packagerVersion: '0.0.5'})
 
 /***/ }),
 
-/***/ 38:
+/***/ 30:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = function(module, exports, $app_require$){'use strict';
@@ -94,7 +94,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _util = __webpack_require__(39);
+var _util = __webpack_require__(31);
 
 var _util2 = _interopRequireDefault(_util);
 
@@ -104,12 +104,12 @@ exports.default = {
   showMenu: _util2.default.showMenu,
   createShortcut: _util2.default.createShortcut
 };
-(exports.default || module.exports).manifest = {"package":"com.application.demo","name":"quick-app-tab","versionName":"1.0.0","versionCode":"1","minPlatformVersion":"101","icon":"/Common/logo.png","features":[{"name":"system.prompt"},{"name":"system.router"},{"name":"system.shortcut"},{"name":"system.fetch"}],"permissions":[{"origin":"*"}],"config":{"logLevel":"debug","designWidth":1080},"router":{"entry":"Demo","pages":{"Demo":{"component":"index"},"DemoDetail":{"component":"index"},"About":{"component":"index"}}},"display":{"titleBarBackgroundColor":"#f2f2f2","titleBarTextColor":"#414141","menu":true,"pages":{"Demo":{"titleBarText":"示例页","menu":false},"DemoDetail":{"titleBarText":"详情页"},"About":{"menu":false}}}};
+(exports.default || module.exports).manifest = {"package":"com.application.demo","name":"quick-app-tab","versionName":"1.0.0","versionCode":"1","minPlatformVersion":"101","icon":"/Common/logo.png","features":[{"name":"system.prompt"},{"name":"system.router"},{"name":"system.shortcut"},{"name":"system.fetch"}],"permissions":[{"origin":"*"}],"config":{"logLevel":"debug","designWidth":1080},"router":{"entry":"Demo","pages":{"Demo":{"component":"index"}}},"display":{"titleBarBackgroundColor":"#f2f2f2","titleBarTextColor":"#414141","menu":true,"pages":{"Demo":{"titleBarText":"示例页","menu":false},"DemoDetail":{"titleBarText":"详情页"},"About":{"menu":false}}}};
 }
 
 /***/ }),
 
-/***/ 39:
+/***/ 31:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -201,7 +201,7 @@ exports.default = {
   else {
     window.createAppHandler = createAppHandler
     // H5注入manifest以获取features
-    global.manifest = {"package":"com.application.demo","name":"quick-app-tab","versionName":"1.0.0","versionCode":"1","minPlatformVersion":"101","icon":"/Common/logo.png","features":[{"name":"system.prompt"},{"name":"system.router"},{"name":"system.shortcut"},{"name":"system.fetch"}],"permissions":[{"origin":"*"}],"config":{"logLevel":"debug","designWidth":1080},"router":{"entry":"Demo","pages":{"Demo":{"component":"index"},"DemoDetail":{"component":"index"},"About":{"component":"index"}}},"display":{"titleBarBackgroundColor":"#f2f2f2","titleBarTextColor":"#414141","menu":true,"pages":{"Demo":{"titleBarText":"示例页","menu":false},"DemoDetail":{"titleBarText":"详情页"},"About":{"menu":false}}}};
+    global.manifest = {"package":"com.application.demo","name":"quick-app-tab","versionName":"1.0.0","versionCode":"1","minPlatformVersion":"101","icon":"/Common/logo.png","features":[{"name":"system.prompt"},{"name":"system.router"},{"name":"system.shortcut"},{"name":"system.fetch"}],"permissions":[{"origin":"*"}],"config":{"logLevel":"debug","designWidth":1080},"router":{"entry":"Demo","pages":{"Demo":{"component":"index"}}},"display":{"titleBarBackgroundColor":"#f2f2f2","titleBarTextColor":"#414141","menu":true,"pages":{"Demo":{"titleBarText":"示例页","menu":false},"DemoDetail":{"titleBarText":"详情页"},"About":{"menu":false}}}};
   }
 })();
 //# sourceMappingURL=app.js.map

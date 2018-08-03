@@ -63,22 +63,18 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
-/* 0 */,
-/* 1 */,
-/* 2 */,
-/* 3 */,
-/* 4 */
+/* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
+__webpack_require__(1)
 __webpack_require__(5)
-__webpack_require__(9)
-var $app_template$ = __webpack_require__(30)
-var $app_style$ = __webpack_require__(31)
-var $app_script$ = __webpack_require__(32)
+var $app_template$ = __webpack_require__(26)
+var $app_style$ = __webpack_require__(27)
+var $app_script$ = __webpack_require__(28)
 
 $app_define$('@app-component/index', [], function($app_require$, $app_exports$, $app_module$){
      $app_script$($app_module$, $app_exports$, $app_require$)
@@ -93,12 +89,12 @@ $app_bootstrap$('@app-component/index',{ packagerVersion: '0.0.5'})
 
 
 /***/ }),
-/* 5 */
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $app_template$ = __webpack_require__(6)
-var $app_style$ = __webpack_require__(7)
-var $app_script$ = __webpack_require__(8)
+var $app_template$ = __webpack_require__(2)
+var $app_style$ = __webpack_require__(3)
+var $app_script$ = __webpack_require__(4)
 
 $app_define$('@app-component/carousel', [], function($app_require$, $app_exports$, $app_module$){
      $app_script$($app_module$, $app_exports$, $app_require$)
@@ -111,7 +107,7 @@ $app_define$('@app-component/carousel', [], function($app_require$, $app_exports
 
 
 /***/ }),
-/* 6 */
+/* 2 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -173,7 +169,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 7 */
+/* 3 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -181,7 +177,8 @@ module.exports = {
     "height": "100%",
     "width": "100%",
     "flexDirection": "column",
-    "justifyContent": "flex-start"
+    "justifyContent": "flex-start",
+    "marginTop": "160px"
   },
   "image": {
     "width": "100%",
@@ -194,7 +191,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 8 */
+/* 4 */
 /***/ (function(module, exports) {
 
 module.exports = function(module, exports, $app_require$){'use strict';
@@ -227,16 +224,16 @@ exports.default = {
 };}
 
 /***/ }),
-/* 9 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
+__webpack_require__(6)
 __webpack_require__(10)
 __webpack_require__(14)
 __webpack_require__(18)
-__webpack_require__(22)
-var $app_template$ = __webpack_require__(27)
-var $app_style$ = __webpack_require__(28)
-var $app_script$ = __webpack_require__(29)
+var $app_template$ = __webpack_require__(23)
+var $app_style$ = __webpack_require__(24)
+var $app_script$ = __webpack_require__(25)
 
 $app_define$('@app-component/header', [], function($app_require$, $app_exports$, $app_module$){
      $app_script$($app_module$, $app_exports$, $app_require$)
@@ -249,12 +246,12 @@ $app_define$('@app-component/header', [], function($app_require$, $app_exports$,
 
 
 /***/ }),
-/* 10 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $app_template$ = __webpack_require__(11)
-var $app_style$ = __webpack_require__(12)
-var $app_script$ = __webpack_require__(13)
+var $app_template$ = __webpack_require__(7)
+var $app_style$ = __webpack_require__(8)
+var $app_script$ = __webpack_require__(9)
 
 $app_define$('@app-component/search-field', [], function($app_require$, $app_exports$, $app_module$){
      $app_script$($app_module$, $app_exports$, $app_require$)
@@ -267,7 +264,7 @@ $app_define$('@app-component/search-field', [], function($app_require$, $app_exp
 
 
 /***/ }),
-/* 11 */
+/* 7 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -345,7 +342,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 12 */
+/* 8 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -416,7 +413,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 13 */
+/* 9 */
 /***/ (function(module, exports) {
 
 module.exports = function(module, exports, $app_require$){'use strict';
@@ -491,12 +488,12 @@ exports.default = {
 };}
 
 /***/ }),
-/* 14 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $app_template$ = __webpack_require__(15)
-var $app_style$ = __webpack_require__(16)
-var $app_script$ = __webpack_require__(17)
+var $app_template$ = __webpack_require__(11)
+var $app_style$ = __webpack_require__(12)
+var $app_script$ = __webpack_require__(13)
 
 $app_define$('@app-component/search-tip-view', [], function($app_require$, $app_exports$, $app_module$){
      $app_script$($app_module$, $app_exports$, $app_require$)
@@ -509,7 +506,7 @@ $app_define$('@app-component/search-tip-view', [], function($app_require$, $app_
 
 
 /***/ }),
-/* 15 */
+/* 11 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -654,7 +651,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 16 */
+/* 12 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -783,7 +780,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 17 */
+/* 13 */
 /***/ (function(module, exports) {
 
 module.exports = function(module, exports, $app_require$){'use strict';
@@ -878,12 +875,12 @@ exports.default = {
 };}
 
 /***/ }),
-/* 18 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $app_template$ = __webpack_require__(19)
-var $app_style$ = __webpack_require__(20)
-var $app_script$ = __webpack_require__(21)
+var $app_template$ = __webpack_require__(15)
+var $app_style$ = __webpack_require__(16)
+var $app_script$ = __webpack_require__(17)
 
 $app_define$('@app-component/associative-view', [], function($app_require$, $app_exports$, $app_module$){
      $app_script$($app_module$, $app_exports$, $app_require$)
@@ -896,7 +893,7 @@ $app_define$('@app-component/associative-view', [], function($app_require$, $app
 
 
 /***/ }),
-/* 19 */
+/* 15 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -944,7 +941,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 20 */
+/* 16 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -1003,7 +1000,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 21 */
+/* 17 */
 /***/ (function(module, exports) {
 
 module.exports = function(module, exports, $app_require$){'use strict';
@@ -1047,12 +1044,12 @@ exports.default = {
 };}
 
 /***/ }),
-/* 22 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $app_template$ = __webpack_require__(23)
-var $app_style$ = __webpack_require__(24)
-var $app_script$ = __webpack_require__(25)
+var $app_template$ = __webpack_require__(19)
+var $app_style$ = __webpack_require__(20)
+var $app_script$ = __webpack_require__(21)
 
 $app_define$('@app-component/search-result-view', [], function($app_require$, $app_exports$, $app_module$){
      $app_script$($app_module$, $app_exports$, $app_require$)
@@ -1065,7 +1062,7 @@ $app_define$('@app-component/search-result-view', [], function($app_require$, $a
 
 
 /***/ }),
-/* 23 */
+/* 19 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -1144,7 +1141,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 24 */
+/* 20 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -1229,13 +1226,16 @@ module.exports = {
     "borderStyle": "solid",
     "borderTopWidth": "1px",
     "flexGrow": 1,
-    "flexShrink": 0,
+    "flexShrink": 1,
     "height": "100%"
   },
   ".result-title": {
     "color": "#000000",
     "fontSize": "48px",
-    "marginBottom": "22px"
+    "marginBottom": "22px",
+    "lines": 1,
+    "textOverflow": "ellipsis",
+    "width": "100%"
   },
   ".result-owner": {
     "color": "#cfcfcf",
@@ -1247,7 +1247,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 25 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = function(module, exports, $app_require$){'use strict';
@@ -1264,7 +1264,7 @@ var _system3 = $app_require$('@app-module/system.fetch');
 
 var _system4 = _interopRequireDefault(_system3);
 
-var _result = __webpack_require__(26);
+var _result = __webpack_require__(22);
 
 var _result2 = _interopRequireDefault(_result);
 
@@ -1299,7 +1299,7 @@ exports.default = {
 };}
 
 /***/ }),
-/* 26 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1487,7 +1487,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 27 */
+/* 23 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -1608,7 +1608,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 28 */
+/* 24 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -1624,7 +1624,10 @@ module.exports = {
     "height": "142px",
     "flexShrink": 0,
     "width": "100%",
-    "backgroundColor": "#ffffff"
+    "backgroundColor": "#ffffff",
+    "borderBottomWidth": "1px",
+    "borderStyle": "solid",
+    "borderBottomColor": "#e5e5e5"
   },
   ".back-btn": {
     "flexShrink": 0,
@@ -1777,7 +1780,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 29 */
+/* 25 */
 /***/ (function(module, exports) {
 
 module.exports = function(module, exports, $app_require$){'use strict';
@@ -1832,6 +1835,10 @@ exports.default = {
     this.setHeaderStatus(false);
     this.$broadcast('toNotSearchTip');
     e && e.stop();
+  },
+  onBackPress: function onBackPress() {
+    this.handleBack();
+    return true;
   },
   handleBack: function handleBack() {
     if (g_stutus == 'resulting') {
@@ -1904,7 +1911,7 @@ exports.default = {
 };}
 
 /***/ }),
-/* 30 */
+/* 26 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -1926,7 +1933,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 31 */
+/* 27 */
 /***/ (function(module, exports) {
 
 module.exports = {
@@ -1951,7 +1958,7 @@ module.exports = {
 }
 
 /***/ }),
-/* 32 */
+/* 28 */
 /***/ (function(module, exports) {
 
 module.exports = function(module, exports, $app_require$){'use strict';

@@ -65,6 +65,9 @@ setSearchInputValue1: 设置搜索输入框内容
     flex-shrink: 0;
     width: 100%;
     background-color: #ffffff;
+    border-bottom-width: 1px;
+    border-style: solid;
+    border-bottom-color: #e5e5e5;
   }
   .back-btn{
     flex-shrink: 0;
@@ -187,6 +190,10 @@ setSearchInputValue1: 设置搜索输入框内容
       this.setHeaderStatus(false);
       this.$broadcast('toNotSearchTip');
       e && e.stop();
+    },
+    onBackPress() { // TODO 无效
+      this.handleBack();
+      return true;
     },
     handleBack() {
       if(g_stutus == 'resulting'){

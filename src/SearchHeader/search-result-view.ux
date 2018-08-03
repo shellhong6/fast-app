@@ -60,13 +60,16 @@
     border-style: solid;
     border-top-width: 1px;
     flex-grow: 1;
-    flex-shrink: 0;
+    flex-shrink: 1;
     height: 100%;
   }
   .result-title{
     color: #000000;
     font-size: 48px;
     margin-bottom: 22px;
+    lines: 1;
+    text-overflow: ellipsis;
+    width: 100%;
   }
   .result-owner{
     color: #cfcfcf;
