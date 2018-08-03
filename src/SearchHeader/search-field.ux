@@ -1,6 +1,7 @@
 <!-- 本组件监听的事件：
 setSearchInputValue: 设置搜索框的值
 setSearchInputBlur: 让搜索框失焦
+setSearchInputPlh: 设置placeholder
 -->
 <template>
   <div class="search-field-container">
@@ -41,8 +42,9 @@ setSearchInputBlur: 让搜索框失焦
       font-size: @inputFontSize;
       height: @inputH;
       line-height: @inputH;
-      color: #616161;
-      placeholder-color: #888888;
+      color: #606060;
+      font-weight: bold;
+      placeholder-color: #8c8c8c;
     }
   }
   .search-icon{
@@ -64,17 +66,25 @@ setSearchInputBlur: 让搜索框失焦
 </style>
 
 <script>
+  var inputVal = '';
+  var notRepeat = false;
   export default {
     data() {
       return {
-        placeholder: '假如明天下雨',
         searchInputVal: '',
         searchClearCls: ''
+      }
+    },
+    props: {
+      placeholder: {
+        type: String,
+        default: ''
       }
     },
     onInit() {
       this.$on('setSearchInputValue', this.setSearchInputValue.bind(this));
       this.$on('setSearchInputBlur', this.setSearchInputBlur.bind(this));
+      this.$on('setSearchInputPlh', this.setSearchInputPlh.bind(this));
     },
     handleFocus(e) {
       this.$dispatch('setHeaderToSearching');
@@ -83,25 +93,34 @@ setSearchInputBlur: 让搜索框失焦
       this.$dispatch('setHeaderToNotSearching');
       this.searchClearCls = '';
     },
+    setSearchInputPlh(e) {
+      this.placeholder = e.detail.placeholder;
+    },
     handlechange(e) {
-      console.log('e.value', e.value || e.detail.value)
-      this.searchInputVal = e.value || e.detail.value;
-      if(e.detail && e.detail.notEmitChange){
+      if(notRepeat){ //解决this.searchInputVal值改变，导致触发change事件，二次进入handlechange
+        notRepeat = false;
         return;
+      }
+      this.searchInputVal = (typeof e.value != 'undefined' ? e.value : e.detail.value);
+      if(inputVal != this.searchInputVal){
+        inputVal = this.searchInputVal;
+        notRepeat = true;
       }
       if(!this.searchInputVal){
         this.searchClearCls = '';
       }else{
         this.searchClearCls = 'search-clear-searching';
       }
-      this.$dispatch('searchInputChange', {value: this.searchInputVal});
+      if(e.detail && e.detail.notEmitChange){
+        this.$dispatch('searchInputChange', {value: this.searchInputVal});
+      }else{
+        this.$dispatch('searchInputChangeWithSt', {value: this.searchInputVal});
+      }
     },
     handleClear() {
       this.$emit('setSearchInputValue', {value: ''});
     },
     setSearchInputValue(e) {
-      console.log('search-field-setSearchInputValue-value', e.detail.value)
-      console.log('search-field-setSearchInputValue-notEmitChange', e.detail.notEmitChange)
       this.$emitElement('change', {value: e.detail.value, notEmitChange: !!e.detail.notEmitChange}, 'searchInput');
       e && e.stop();
     },

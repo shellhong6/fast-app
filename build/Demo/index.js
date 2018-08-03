@@ -375,8 +375,9 @@ module.exports = {
     "fontSize": "40px",
     "height": "55px",
     "lineHeight": "55px",
-    "color": "#616161",
-    "placeholderColor": "#888888",
+    "color": "#606060",
+    "fontWeight": "bold",
+    "placeholderColor": "#8c8c8c",
     "_meta": {
       "ruleDef": [
         {
@@ -423,17 +424,26 @@ module.exports = function(module, exports, $app_require$){'use strict';
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+var inputVal = '';
+var notRepeat = false;
 exports.default = {
   data: function data() {
     return {
-      placeholder: '假如明天下雨',
       searchInputVal: '',
       searchClearCls: ''
     };
   },
+
+  props: {
+    placeholder: {
+      type: String,
+      default: ''
+    }
+  },
   onInit: function onInit() {
     this.$on('setSearchInputValue', this.setSearchInputValue.bind(this));
     this.$on('setSearchInputBlur', this.setSearchInputBlur.bind(this));
+    this.$on('setSearchInputPlh', this.setSearchInputPlh.bind(this));
   },
   handleFocus: function handleFocus(e) {
     this.$dispatch('setHeaderToSearching');
@@ -442,25 +452,34 @@ exports.default = {
     this.$dispatch('setHeaderToNotSearching');
     this.searchClearCls = '';
   },
+  setSearchInputPlh: function setSearchInputPlh(e) {
+    this.placeholder = e.detail.placeholder;
+  },
   handlechange: function handlechange(e) {
-    console.log('e.value', e.value || e.detail.value);
-    this.searchInputVal = e.value || e.detail.value;
-    if (e.detail && e.detail.notEmitChange) {
+    if (notRepeat) {
+      notRepeat = false;
       return;
+    }
+    this.searchInputVal = typeof e.value != 'undefined' ? e.value : e.detail.value;
+    if (inputVal != this.searchInputVal) {
+      inputVal = this.searchInputVal;
+      notRepeat = true;
     }
     if (!this.searchInputVal) {
       this.searchClearCls = '';
     } else {
       this.searchClearCls = 'search-clear-searching';
     }
-    this.$dispatch('searchInputChange', { value: this.searchInputVal });
+    if (e.detail && e.detail.notEmitChange) {
+      this.$dispatch('searchInputChange', { value: this.searchInputVal });
+    } else {
+      this.$dispatch('searchInputChangeWithSt', { value: this.searchInputVal });
+    }
   },
   handleClear: function handleClear() {
     this.$emit('setSearchInputValue', { value: '' });
   },
   setSearchInputValue: function setSearchInputValue(e) {
-    console.log('search-field-setSearchInputValue-value', e.detail.value);
-    console.log('search-field-setSearchInputValue-notEmitChange', e.detail.notEmitChange);
     this.$emitElement('change', { value: e.detail.value, notEmitChange: !!e.detail.notEmitChange }, 'searchInput');
     e && e.stop();
   },
@@ -850,6 +869,7 @@ exports.default = {
         }
       });
     }
+    this.$dispatch('setSearchInputValue1', { value: '', notEmitChange: true });
     this.toSearchTipCls = 'searchTiping';
   },
   toNotSearchTip: function toNotSearchTip() {
@@ -1523,7 +1543,8 @@ module.exports = {
         {
           "type": "search-field",
           "attr": {
-            "id": "searchField"
+            "id": "searchField",
+            "placeholder": function () {return this.placeholder}
           },
           "id": "searchField"
         },
@@ -1567,6 +1588,9 @@ module.exports = {
               "type": "div",
               "attr": {},
               "classList": function () {return ['search-btn', this.searchBtnCls]},
+              "events": {
+                "click": "handleSearch"
+              },
               "children": [
                 {
                   "type": "text",
@@ -1761,22 +1785,27 @@ module.exports = function(module, exports, $app_require$){'use strict';
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _system = $app_require$('@app-module/system.prompt');
+
+var _system2 = _interopRequireDefault(_system);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var g_isSearching = false;
 var g_stutus = '';
+var g_inputVal = '';
 exports.default = {
   onInit: function onInit() {
     this.$on('setHeaderToSearching', this.setHeaderToSearching.bind(this));
     this.$on('setHeaderToNotSearching', this.setHeaderToNotSearching.bind(this));
+    this.$on('searchInputChangeWithSt', this.searchInputChangeWithSt.bind(this));
     this.$on('searchInputChange', this.searchInputChange.bind(this));
     this.$on('setHeaderToResulting', this.setHeaderToResulting.bind(this));
     this.$on('setHeaderToNotResulting', this.setHeaderToNotResulting.bind(this));
     this.$on('setSearchInputValue1', this.setSearchInputValue1.bind(this));
   },
   setSearchInputValue1: function setSearchInputValue1(e) {
-    for (var p in e.detail) {
-      console.log('header-setSearchInputValue1-', p, e.detail[p]);
-    }
-
     this.$broadcast('setSearchInputValue', e.detail);
   },
   setHeaderToResulting: function setHeaderToResulting(e) {
@@ -1812,6 +1841,11 @@ exports.default = {
       this.$broadcast('setSearchInputBlur');
     }
   },
+  handleSearch: function handleSearch() {
+    this.$emit('setHeaderToResulting', {
+      word: g_inputVal || this.placeholder
+    });
+  },
   setHeaderStatus: function setHeaderStatus(isSearching) {
     g_isSearching = isSearching;
     if (!isSearching) {
@@ -1824,6 +1858,10 @@ exports.default = {
       this.$broadcast('toNotSearchTip');
       this.$broadcast('toNotAssociative');
       this.$broadcast('toNotSearchResulting');
+      this.placeholder = '\u5929\u9F99' + parseInt(Math.random() * 100) + '\u90E8';
+      this.$broadcast('setSearchInputPlh', {
+        placeholder: this.placeholder
+      });
     } else {
       this.backBtnCls = 'back-btn-searching';
       this.backImgCls = 'back-img-searching';
@@ -1834,10 +1872,14 @@ exports.default = {
     }
   },
   searchInputChange: function searchInputChange(e) {
+    g_inputVal = e.detail.value;
+  },
+  searchInputChangeWithSt: function searchInputChangeWithSt(e) {
+    this.searchInputChange(e);
+    var val = e.detail.value;
     if (!g_isSearching) {
       return false;
     }
-    var val = e.detail.value;
     if (val) {
       g_stutus = 'associativing';
       this.$broadcast('toNotSearchTip');
@@ -1855,7 +1897,8 @@ exports.default = {
       btnFieldCls: '',
       shoppingCarCls: '',
       userInfoCls: '',
-      searchBtnCls: ''
+      searchBtnCls: '',
+      placeholder: '\u5929\u9F99' + parseInt(Math.random() * 100) + '\u90E8'
     };
   }
 };}

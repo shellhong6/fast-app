@@ -171,6 +171,7 @@
           }
         });
       }
+      this.$dispatch('setSearchInputValue1', {value: '', notEmitChange: true});
       this.toSearchTipCls = 'searchTiping';
     },
     toNotSearchTip() {
