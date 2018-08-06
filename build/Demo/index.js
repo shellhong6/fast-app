@@ -1836,10 +1836,7 @@ exports.default = {
     this.$broadcast('toNotSearchTip');
     e && e.stop();
   },
-  onBackPress: function onBackPress() {
-    this.handleBack();
-    return true;
-  },
+  onBackPress: function onBackPress() {},
   handleBack: function handleBack() {
     if (g_stutus == 'resulting') {
       this.setHeaderToNotResulting();
